@@ -1,3 +1,7 @@
-FROM nginx
+FROM alpine:3.16
 
-COPY . /usr/share/nginx/html
+# COPY conf/nginx.conf  /etc/nginx/http.d/default.conf
+
+RUN apk update && apk add nginx openssl
+
+CMD [ "nginx", "-g", "daemon off;" ]

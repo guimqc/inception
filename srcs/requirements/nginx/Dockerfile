@@ -1,7 +1,6 @@
 FROM alpine:3.16
 
 COPY ./conf/default.conf /etc/nginx/http.d/default.conf
-COPY ./conf/index.html /usr/share/nginx/html
 
 RUN	apk update && apk add nginx openssl && \
 	mkdir etc/nginx/ssl && \

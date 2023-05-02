@@ -4,6 +4,7 @@ COPY ./conf/default.conf /etc/nginx/http.d/default.conf
 
 RUN	apk update && apk add nginx openssl && \
 	mkdir etc/nginx/ssl && \
+	chmod 700 etc/nginx/ssl && \
 	openssl req -newkey rsa:2048 -x509 -sha256 -days 365 -nodes \
     -out /etc/nginx/ssl/key.crt \
     -keyout /etc/nginx/ssl/key.key \

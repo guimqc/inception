@@ -1,1 +1,33 @@
+version: "3"
 services:
+  wordpress:
+    image: wp
+    depends_on:
+      - mariadb
+    restart: always
+    volumes:
+      - wp_html:/~/data/wp_html
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_password
+      WORDPRESS_DB_HOST: mariadb:3306
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+      - "8080:443"
+  mariadb:
+    image: mariadb
+    restart: always
+    volumes:
+      - wp_db:/~/data/wp_db
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql_root_password
+      MYSQL_DATABASE: wp_db
+      MYSQL_USER: mysql_user
+      MYSQL_PASSWORD: mysql_password
+volumes:
+  wp_db:
+  wp_html:

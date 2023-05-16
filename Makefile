@@ -1,6 +1,8 @@
-SRCS=
-
-OBJ=
+all:
+	docker build -t nginx srcs/requirements/nginx
+	docker build -t mariadb srcs/requirements/mariadb
+	docker build -t wp srcs/requirements/wordpress
+	cd srcs && docker-compose up
 
 # docker commands:
 # docker build -t <image name> <Dockerfile directory>

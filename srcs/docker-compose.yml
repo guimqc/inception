@@ -1,25 +1,31 @@
 version: "3"
 services:
-  wordpress:
-    image: wp
-    depends_on:
-      - mariadb
-    restart: always
-    volumes:
-      - wp_html:/~/data/wp_html
-    ports:
-      - "80:80"
-    environment:
-      WORDPRESS_DB_USER: wp_user
-      WORDPRESS_DB_PASSWORD: wp_password
-      WORDPRESS_DB_HOST: mariadb:3306
+  # wordpress:
+  #   image: wp
+  #   networks:
+  #     - network
+  #   depends_on:
+  #     - mariadb
+  #   restart: always
+  #   volumes:
+  #     - wp_html:/~/data/wp_html
+  #   ports:
+  #     - "80:80"
+  #   environment:
+  #     WORDPRESS_DB_USER: wp_user
+  #     WORDPRESS_DB_PASSWORD: wp_password
+  #     WORDPRESS_DB_HOST: mariadb:3306
   nginx:
     image: nginx
+    networks:
+      - network
     restart: always
     ports:
       - "8080:443"
   mariadb:
     image: mariadb
+    networks:
+      - network
     restart: always
     volumes:
       - wp_db:/~/data/wp_db
@@ -31,3 +37,5 @@ services:
 volumes:
   wp_db:
   wp_html:
+networks:
+  network:

@@ -1,20 +1,20 @@
 version: "3"
 services:
-  # wordpress:
-  #   image: wp
-  #   networks:
-  #     - network
-  #   depends_on:
-  #     - mariadb
-  #   restart: always
-  #   volumes:
-  #     - wp_html:/~/data/wp_html
-  #   ports:
-  #     - "80:80"
-  #   environment:
-  #     WORDPRESS_DB_USER: wp_user
-  #     WORDPRESS_DB_PASSWORD: wp_password
-  #     WORDPRESS_DB_HOST: mariadb:3306
+  wordpress:
+    image: wp
+    networks:
+      - network
+    depends_on:
+      - mariadb
+    restart: always
+    volumes:
+      - wp_html:/~/data/wp_html
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_password
+      WORDPRESS_DB_HOST: mariadb:3306
   nginx:
     image: nginx
     networks:

@@ -1,41 +1,48 @@
 version: "3"
 services:
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    networks:
+      - network
+    depends_on:
+      - wordpress
+    restart: always
+    ports:
+      - "443:443"
+      - "9000"
+
   wordpress:
-    image: wp
+    container_name: wordpress
+    build: ./requirements/wordpress
     networks:
       - network
     depends_on:
       - mariadb
     restart: always
+    expose:
+      - "9000"
     volumes:
-      - wp_html:/~/data/wp_html
-    ports:
-      - "80:80"
+      - ~/data/wp_html:/var/www/html/ # change to /home/gvial/data/wp_html
     environment:
       WORDPRESS_DB_USER: wp_user
       WORDPRESS_DB_PASSWORD: wp_password
       WORDPRESS_DB_HOST: mariadb:3306
-  nginx:
-    image: nginx
-    networks:
-      - network
-    restart: always
-    ports:
-      - "8080:443"
+
   mariadb:
-    image: mariadb
+    container_name: mariadb
+    build: ./requirements/mariadb
     networks:
       - network
     restart: always
+    expose:
+     - "3306"
     volumes:
-      - wp_db:/~/data/wp_db
+      - ~/data/wp_db:/~/data/wp_db # change to /home/gvial/data/wp_db
     environment:
       MYSQL_ROOT_PASSWORD: mysql_root_password
       MYSQL_DATABASE: wp_db
       MYSQL_USER: mysql_user
       MYSQL_PASSWORD: mysql_password
-volumes:
-  wp_db:
-  wp_html:
 networks:
   network:

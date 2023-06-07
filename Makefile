@@ -1,5 +1,5 @@
 all:
-	cd srcs && sudo docker-compose up
+	cd srcs && sudo docker-compose up --build
 
 fclean:
 	docker rm -f $$(docker ps -aq) && docker rmi $$(docker images -aq)

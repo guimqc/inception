@@ -1,50 +1,55 @@
 version: "3"
+
 services:
-  nginx:
-    container_name: nginx
-    build: ./requirements/nginx
-    networks:
-      - network
-    depends_on:
-      - wordpress
-    restart: always
-    ports:
-      - "443:443"
-      - "80:80"
-    volumes:
-      - ~/data/wp_html:/var/www/html # change to /home/gvial/data/wp_html
-
-  wordpress:
-    container_name: wordpress
-    build: ./requirements/wordpress
-    networks:
-      - network
-    depends_on:
-      - mariadb
-    restart: always
-    expose:
-      - "9000"
-    volumes:
-      - ~/data/wp_html:/var/www/html # change to /home/gvial/data/wp_html
-    environment:
-      WORDPRESS_DB_USER: wp_user
-      WORDPRESS_DB_PASSWORD: wp_password
-      WORDPRESS_DB_HOST: mariadb:3306
-
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
     networks:
       - network
     restart: always
-    expose:
-     - "3306"
     volumes:
-      - ~/data/wp_db:/wp_db # change to /home/gvial/data/wp_db
+      - ${VOLUME_PATH}/mariadb:${MYSQL_DATADIR}
+    expose:
+      - "3306"
     environment:
-      MYSQL_ROOT_PASSWORD: mysql_root_password
-      MYSQL_DATABASE: wp_db
-      MYSQL_USER: mysql_user
-      MYSQL_PASSWORD: mysql_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATADIR: ${MYSQL_DATADIR}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    networks:
+      - network
+    expose:
+      - "9000"
+    depends_on:
+      - mariadb
+    restart: always
+    volumes:
+      - ${VOLUME_PATH}/wordpress:/var/www/html
+    environment:
+      WP_USER: ${WP_USER}
+      WP_PASSWORD: ${WP_PASSWORD}
+      WP_HOST: mariadb:3306
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    networks:
+      - network
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    restart: always
+    volumes:
+      - ${VOLUME_PATH}/wordpress:/var/www/html
+
 networks:
   network:

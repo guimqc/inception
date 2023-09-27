@@ -9,7 +9,8 @@ COPY ./tool/entry.sh .
 
 RUN	chmod +x ./entry.sh
 RUN	mkdir -p /run/mysqld /var/lib/mysql /var/log/mysql
-RUN	chown -R mysql:mysql /var/lib/mysql
+RUN	chown -R mysql:mysql /var/lib/mysql /run/mysqld /var/log/mysql/
+RUN chmod -R 755 /var/log/mysql/
 
 ENTRYPOINT [ "./entry.sh" ]
 

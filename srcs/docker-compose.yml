@@ -14,6 +14,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATADIR: ${MYSQL_DATADIR}
+      MYSQL_SERVER: ${MYSQL_SERVER}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -32,12 +33,14 @@ services:
       - ${VOLUME_PATH}/wordpress:/var/www/html
     environment:
       WP_USER: ${WP_USER}
+      WP_EMAIL: ${WP_EMAIL}
       WP_PASSWORD: ${WP_PASSWORD}
-      WP_HOST: mariadb:3306
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_SERVER: ${MYSQL_SERVER}
+      MYSQL_EMAIL: ${MYSQL_EMAIL}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+      DOMAIN_NAME: ${DOMAIN_NAME}
 
   nginx:
     container_name: nginx
@@ -51,6 +54,8 @@ services:
     restart: always
     volumes:
       - ${VOLUME_PATH}/wordpress:/var/www/html
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
 
 networks:
   network:

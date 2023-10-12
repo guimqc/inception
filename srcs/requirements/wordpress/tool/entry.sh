@@ -6,10 +6,6 @@ for i in {0..10}; do
 	fi
 	sleep 2
 done
-if [ "$i" = 10 ]; then
-	echo "Can't connect to db"
-fi
-
 if [ ! -f "/var/www/html/wp-config.php" ]; then
         tar -xzf wordpress-6.0.tar.gz
         rm wordpress-6.0.tar.gz

@@ -14,8 +14,6 @@ RUN apk update && apk upgrade && apk add --no-cache \
 	php8-xml php8-zip php8-mbstring php8-curl php8-openssl
 
 RUN  chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
-EXPOSE 9000
-
 
 ENTRYPOINT ["/entry.sh"]
 
